@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/ebean-plugin.xml
+
+# datasources
+/dataSources
+/dataSources.local.xml
+/dataSources.xml

@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+skin rose
+set separator none
+hide empty members
+
+entity Dueño {
+    {static} RUT
+    Nombre
+    Apellidos
+    Email
+    Telefono
+}
+
+entity Edificio {
+    Nombre
+    Dirección
+}
+
+entity Contrato {
+    Fecha de Pago de Gastos Comunes
+}
+
+entity Pago {
+    Fecha
+    Monto
+}
+Pago "*" -- "1" Contrato: registra <
+
+entity Departamento {
+    Número
+    Piso
+}
+Departamento "*" -- "1" Edificio: pertenece >
+Departamento "*" -- "1" Dueño: tiene >
+(Departamento, Dueño) .. Contrato
+
+@enduml
