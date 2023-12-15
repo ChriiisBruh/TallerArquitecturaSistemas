@@ -1,0 +1,17 @@
+version: '3'
+services:
+  conserjeria:
+    build: .
+    ports:
+      - "7070:7070"
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: conserjeria_db
+      MYSQL_USER: conserjeria_user
+      MYSQL_PASSWORD: conserjeria_password
+    ports:
+      - "3306:3306"

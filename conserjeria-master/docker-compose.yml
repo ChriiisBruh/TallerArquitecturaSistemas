@@ -1,0 +1,6 @@
+version: '3'
+services:
+  conserjeria:
+    build: .
+    ports:
+      - "7070:7070"
