@@ -1,17 +1,14 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+FROM gradle:8.3.0-jdk17 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-# Set the working directory to /app
-WORKDIR /app
+FROM adoptopenjdk/openjdk17:alpine-slim
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+EXPOSE 8080
 
-# Build your application using Gradle
-RUN ./gradlew build
+RUN mkdir /app
 
-# Make port 7070 available to the world outside this container
-EXPOSE 7070
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/javalin-application.jar
 
-# Run your application when the container launches
-CMD ["./gradlew", "run"]
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/javalin-application.jar"]

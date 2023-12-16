@@ -1,17 +1,24 @@
 version: '3'
+
 services:
-  conserjeria:
-    build: .
-    ports:
-      - "7070:7070"
-    depends_on:
-      - mariadb
   mariadb:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: conserjeria_db
-      MYSQL_USER: conserjeria_user
-      MYSQL_PASSWORD: conserjeria_password
+      MYSQL_ROOT_PASSWORD: secret-password-conserjeria-as-root
+      MYSQL_DATABASE: sample-db
+      MYSQL_USER: my-username
+      MYSQL_PASSWORD: secret-password-conserjeria-as
+
+  javalin-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: javalin-app-container
+    depends_on:
+      - mariadb
     ports:
-      - "3306:3306"
+      - "8080:7070"
+    environment:
+      JDBC_URL: jdbc:mysql://mariadb:3306/sample-db
+      JDBC_USER: my-username
+      JDBC_PASSWORD: secret-password-conserjeria-as
